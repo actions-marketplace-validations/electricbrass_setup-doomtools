@@ -1,0 +1,31 @@
+{
+  "name": "setup-doomtools",
+  "version": "1.0.0",
+  "description": "GitHub Action for installing DoomTools",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "ncc build src/main.js -o dist --minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/electricbrass/setup-doomtools.git"
+  },
+  "keywords": [],
+  "author": "Mia McMahill",
+  "license": "MIT",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/electricbrass/setup-doomtools/issues"
+  },
+  "homepage": "https://github.com/electricbrass/setup-doomtools#readme",
+  "dependencies": {
+    "@actions/cache": "^6.2.0",
+    "@actions/core": "^3.0.1",
+    "@actions/github": "^9.1.1",
+    "@actions/tool-cache": "^4.0.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.45.0"
+  }
+}

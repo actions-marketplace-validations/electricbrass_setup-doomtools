@@ -1,0 +1,19 @@
+name: 'Setup DoomTools'
+description: 'Download and set up DoomTools'
+author: 'Mia McMahill'
+inputs:
+  version:
+    description: 'DoomTools version to install'
+    required: false
+    default: 'latest'
+  distribution:
+    description: 'DoomTools distribution (bash, cmd, auto)'
+    required: false
+    default: 'auto'
+  token:
+    description: 'Token for authenticating to the GitHub API'
+    required: false
+    default: ${{ github.token }}
+runs:
+  using: node24
+  main: dist/index.js

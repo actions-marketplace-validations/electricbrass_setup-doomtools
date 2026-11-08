@@ -1,0 +1,57 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test (${{ matrix.os }}, ${{ matrix.distribution }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            distribution: bash
+          - os: windows-latest
+            distribution: cmd
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: unauthenticated api access
+        id: setup
+        uses: ./
+        with:
+          version: latest
+          distribution: ${{ matrix.distribution }}
+
+      - name: action outputs
+        shell: bash
+        env:
+          VERSION: ${{ steps.setup.outputs.version }}
+          DISTRIBUTION: ${{ steps.setup.outputs.distribution }}
+        run: |
+          test -n "$VERSION"
+          test "$DISTRIBUTION" = "${{ matrix.distribution }}"
+          echo "Installed DoomTools $VERSION ($DISTRIBUTION)"
+
+      - name: authenticated api access
+        uses: ./
+        with:
+          distribution: ${{ matrix.distribution }}
+          token: ${{ github.token }}
+
+      - name: try printing some stuff
+        run: doomtools --version
+
+      - name: try more
+        run: doomtools --env
