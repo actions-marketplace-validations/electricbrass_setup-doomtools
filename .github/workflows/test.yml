@@ -19,39 +19,39 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            distribution: bash
+            distribution: auto
+            distribution-check: bash
           - os: windows-latest
-            distribution: cmd
-
+            distribution: auto
+            distribution-check: cmd
+          - os: windows-latest
+            distribution: bash
+            distribution-check: bash
+          - os: macos-latest
+            distribution: auto
+            distribution-check: bash
     steps:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: unauthenticated api access
+      - name: Install DoomTools
         id: setup
         uses: ./
         with:
-          version: latest
           distribution: ${{ matrix.distribution }}
 
-      - name: action outputs
+      - name: Check Action Outputs
         shell: bash
         env:
           VERSION: ${{ steps.setup.outputs.version }}
           DISTRIBUTION: ${{ steps.setup.outputs.distribution }}
         run: |
           test -n "$VERSION"
-          test "$DISTRIBUTION" = "${{ matrix.distribution }}"
+          test "$DISTRIBUTION" = "${{ matrix.distribution-check }}"
           echo "Installed DoomTools $VERSION ($DISTRIBUTION)"
 
-      - name: authenticated api access
-        uses: ./
-        with:
-          distribution: ${{ matrix.distribution }}
-          token: ${{ github.token }}
-
-      - name: try printing some stuff
+      - name: Print DoomTools version
         run: doomtools --version
 
-      - name: try more
+      - name: Print DoomTools environment
         run: doomtools --env
